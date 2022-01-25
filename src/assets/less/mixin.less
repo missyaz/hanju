@@ -1,0 +1,16 @@
+/* 单行文本溢出隐藏 省略号代替 */
+#single-line-overflow(){
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+};
+/* 多行文本溢出隐藏 省略号代替*/
+#multi-line-overflow(){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical; //设置对其模式
+  -webkit-line-clamp: 2; //设置多行的行数
+}
+

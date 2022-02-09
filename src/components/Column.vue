@@ -18,6 +18,20 @@
         <div class="item-content">
             <el-row class="row-content">
                 <el-col :span="4">
+                    <div class="listbox" title="太宗李明远">
+                        <el-link :underline="false">
+                            <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
+                            <span class="listbox-hover"></span>
+                            <span class="listbox-remarks">第12集</span>
+                            <span class="listbox-score">6.8</span>
+                        </el-link>
+                        <div class="list-title">
+                            <el-link><span>太宗李明远</span></el-link>
+                            <p class="otherinfo">태종 이방원</p>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :span="4">
                     <div class="listbox">
                         <el-link :underline="false">
                             <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
@@ -27,6 +41,75 @@
                         </el-link>
                         <div class="list-title">
                             <el-link><span style="font-weight: bold">太宗李明远</span></el-link>
+                            <p class="otherinfo">태종 이방원</p>
+                        </div>
+                    </div>
+                </el-col><el-col :span="4">
+                <div class="listbox">
+                    <el-link :underline="false">
+                        <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
+                        <span class="listbox-hover"></span>
+                        <span class="listbox-remarks">第12集</span>
+                        <span class="listbox-score">6.8</span>
+                    </el-link>
+                    <div class="list-title">
+                        <el-link><span style="font-weight: bold">太宗李明远</span></el-link>
+                        <p class="otherinfo">태종 이방원</p>
+                    </div>
+                </div>
+            </el-col><el-col :span="4">
+                <div class="listbox">
+                    <el-link :underline="false">
+                        <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
+                        <span class="listbox-hover"></span>
+                        <span class="listbox-remarks">第12集</span>
+                        <span class="listbox-score">6.8</span>
+                    </el-link>
+                    <div class="list-title">
+                        <el-link><span style="font-weight: bold">太宗李明远</span></el-link>
+                        <p class="otherinfo">태종 이방원</p>
+                    </div>
+                </div>
+            </el-col><el-col :span="4">
+                <div class="listbox">
+                    <el-link :underline="false">
+                        <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
+                        <span class="listbox-hover"></span>
+                        <span class="listbox-remarks">第12集</span>
+                        <span class="listbox-score">6.8</span>
+                    </el-link>
+                    <div class="list-title">
+                        <el-link><span style="font-weight: bold">太宗李明远</span></el-link>
+                        <p class="otherinfo">태종 이방원</p>
+                    </div>
+                </div>
+            </el-col>
+                <el-col :span="4">
+                    <div class="listbox">
+                        <el-link :underline="false">
+                            <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
+                            <span class="listbox-hover"></span>
+                            <span class="listbox-remarks">第12集</span>
+                            <span class="listbox-score">6.8</span>
+                        </el-link>
+                        <div class="list-title">
+                            <el-link><span style="font-weight: bold">太宗李明远</span></el-link>
+                            <p class="otherinfo">태종 이방원</p>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row class="row-content">
+                <el-col :span="4">
+                    <div class="listbox">
+                        <el-link :underline="false">
+                            <el-image src="//pic.tvn.cc/Uploads/vod/61b69f61280d5.jpg"></el-image>
+                            <span class="listbox-hover"></span>
+                            <span class="listbox-remarks">第12集</span>
+                            <span class="listbox-score">6.8</span>
+                        </el-link>
+                        <div class="list-title">
+                            <el-link><span>太宗李明远</span></el-link>
                             <p class="otherinfo">태종 이방원</p>
                         </div>
                     </div>
@@ -220,8 +303,8 @@
                     }
                     .list-title{
                         .otherinfo{
-                            margin: 5px 5px;
-                            font-size: 14px;
+                            margin-top: 2px;
+                            font-size: 12px;
                         }
                     }
                 }

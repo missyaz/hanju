@@ -5,25 +5,23 @@
             background: `url(${imgUrl}) no-repeat center center`
        }"
       ></div>
-      <!--布局-->
-      <!--外层容器-->
-      <el-container>
-          <!--顶部-->
-          <el-header class="header-wrap" :class="{'fixed':isFixed}">
-            <Header></Header>
-          </el-header>
-          <el-main>
-              <div class="content"
-                   :style="contentStyle"
-                   ref="scrollone">
-                  <router-view></router-view>
-              </div>
-          </el-main>
-          <!--底部-->
-          <el-footer>
-            <Footer></Footer>
-          </el-footer>
-      </el-container>
+
+      <div class="header-wrap" :class="{'fixed':isFixed}">
+        <Header></Header>
+      </div>
+
+      <div class="content"
+           :style="contentStyle"
+           ref="scrollone">
+          <router-view></router-view>
+
+      </div>
+
+      <!--底部-->
+      <div class="footer-wrap">
+          <Footer></Footer>
+      </div>
+
   </div>
 </template>
 
@@ -48,7 +46,7 @@ export default {
               width: "80%",
               position: "relative",
               left: "10%",
-              top: "0",
+              top: "60px"
           }
       }
   },
@@ -66,7 +64,7 @@ export default {
                   width: "80%",
                   position: "relative",
                   left: "10%",
-                  top: "0",
+                  top: "60px"
               }
           }
       }
@@ -112,20 +110,25 @@ export default {
             height: 100%;
             position: fixed;
         }
-        .el-container{
-            .header-wrap{
-                /*background-color: white;*/
-            }
-            /*.header-wrap.fixed{*/
-            /*    position: fixed;*/
-            /*    top: 0;*/
-            /*    width: 100%;*/
-            /*    !*z-index: 999;*!*/
-            /*}*/
+        .header-wrap{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+        }
+        .header-wrap.fixed{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
         }
         .content{
-            height: 100%;
             padding-top: 10px;
+        }
+        .footer-wrap{
+            position: relative;
+            bottom: -50px;
         }
     }
 </style>

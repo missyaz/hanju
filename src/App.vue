@@ -7,23 +7,22 @@
       ></div>
       <!--布局-->
       <!--外层容器-->
-      <el-container
-              class="container"
-              :style="containerStyle"
-      >
-        <!--顶部-->
-        <el-header>
+      <el-container>
+          <!--顶部-->
+          <el-header class="header-wrap" :class="{'fixed':isFixed}">
             <Header></Header>
-        </el-header>
-
-      <div class="content">
-          <router-view></router-view>
-      </div>
-
-        <!--底部-->
-        <el-footer>
+          </el-header>
+          <el-main>
+              <div class="content"
+                   :style="contentStyle"
+                   ref="scrollone">
+                  <router-view></router-view>
+              </div>
+          </el-main>
+          <!--底部-->
+          <el-footer>
             <Footer></Footer>
-        </el-footer>
+          </el-footer>
       </el-container>
   </div>
 </template>
@@ -44,7 +43,8 @@ export default {
           n:1,     //返回背景图数量
           imgUrl:'',
           minWidth: "1250px",
-          containerStyle:{
+          isFixed: false,
+          contentStyle:{
               width: "80%",
               position: "relative",
               left: "10%",
@@ -56,12 +56,13 @@ export default {
       this.getBingImage(this.n)
   },
   mounted() {
+      // 页面大小改变
       window.onresize = ()=>{
           let windowWidth = window.innerWidth
           if (windowWidth < this.minWidth){
-              this.containerStyle = {}
+              this.contentStyle = {}
           }else {
-              this.containerStyle = {
+              this.contentStyle = {
                   width: "80%",
                   position: "relative",
                   left: "10%",
@@ -69,6 +70,8 @@ export default {
               }
           }
       }
+      // 监听页面的滚动时间
+      window.addEventListener("scroll",this.handleScroll)
   },
   computed:{
 
@@ -86,24 +89,43 @@ export default {
           const bingUrl = "http://cn.bing.com"
           this.imgUrl = bingUrl + imgUrl
       },
+
+      // 处理滚动
+      handleScroll(){
+          // 获取滚动时的高度
+          let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+          let oneHeight = this.$refs.scrollone.offsetTop;
+          console.log(oneHeight)
+          this.isFixed = scrollTop > oneHeight ? true: false;
+      }
   }
 }
 </script>
 
 <style scoped lang="less">
-    /*#app{*/
-    /*    min-width: 1250px;*/
-    /*}*/
-    .background-image{
-      /*background: url("https://api.ixiaowai.cn/mcapi/mcapi.php") no-repeat center center;*/
-      background-size: 100%;
-      width: 100%;
-      height: 100%;
-      position: fixed;
+    @import "~@/assets/less/variable.less";
+    #app{
+        .background-image{
+            background-size: 100%;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+        }
+        .el-container{
+            .header-wrap{
+                /*background-color: white;*/
+            }
+            /*.header-wrap.fixed{*/
+            /*    position: fixed;*/
+            /*    top: 0;*/
+            /*    width: 100%;*/
+            /*    !*z-index: 999;*!*/
+            /*}*/
+        }
+        .content{
+            height: 100%;
+            padding-top: 10px;
+        }
     }
-    .content{
-        height: 100%;
-        background: rgba(255,255,255,.58);
-    }
-
 </style>

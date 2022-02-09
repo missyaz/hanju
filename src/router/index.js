@@ -11,11 +11,15 @@ export default new Router({
         },
         {
             path: "/index",
-            component: ()=>import('@/pages/index')
+            component: () => import('@/pages/index')
         },
         {
             path: "/video",
-            component: ()=>import('@/pages/eyesVideo')
+            component: () => import('@/pages/eyesVideo')
+        },
+        {
+            path: "/play",
+            component: ()=> import('@/pages/play')
         }
     ]
 })

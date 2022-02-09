@@ -74,10 +74,14 @@
 </script>
 
 <style scoped lang="less">
+    @import "~@/assets/less/variable.less";
     .header{
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        position: relative;
+        float: left;
+        left: 11%;
         .logo{
             margin-left: -30px;
             margin-right: 10px;

@@ -18,5 +18,8 @@
 </script>
 
 <style scoped lang="less">
-
+    @import "~@/assets/less/variable.less";
+    .index{
+        background-color: @color-background;
+    }
 </style>

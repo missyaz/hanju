@@ -1,10 +1,10 @@
 import request from "@/api/request";
 
 export default {
-    getVideoInfo(){
+    getDetail(){
         return request({
-            url: `/video/`,
-            method: "GET"
+            url: '/mock/detail',
+            method: 'GET'
         })
     }
 }

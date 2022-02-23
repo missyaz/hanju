@@ -1,54 +1,58 @@
 <template>
-    <!--播放页-->
-    <div class="player">
-        <!--播放器主要部分-->
-        <div class="player-primary">
-            <el-row>
-                <el-col :span="18">
-                    <!--播放器-->
-                    <iframe class="embed-responsive-item"
-                            :src="`//dp.tvn.cc/m3u8dp.php?url=${video.playUrl}`"
-                            scrolling="no"
-                            allowfullscreen="true"
-                            width="100%"
-                            height="540px"
-                            frameborder="0">
-                    </iframe>
-                </el-col>
-                <el-col class="player-aside-r" :span="6">
-                    <div class="series-wrap">
-                        <div class="info">
-                            <p class="title">{{video.name}}</p>
-                            <span style="font-size: 12px">{{video.name}}-第{{NO}}集</span>
-                        </div>
-                        <div class="tips-wrap">
-                            <span class="tips">温馨提示：切勿相信视频内任何网址信息</span>
-                        </div>
-                        <div class="series">
-                            <!--<el-scrollbar-->
-                            <!--        style="height: 217px"-->
-                            <!--&gt;-->
-                            <!--    <el-link class="column"-->
-                            <!--             v-for="(noObj,index) in noObjList" :key="index"-->
-                            <!--             :class="{'active':noObj.isActive}"-->
-                            <!--             :href="`#${video.videoPath}${index+1}`"-->
-                            <!--             :underline="false"-->
-                            <!--    >第{{noObj.no}}集</el-link>-->
-                            <!--</el-scrollbar>-->
-                            <vuescroll :ops="ops" style="height: 400px">
-                                <el-link class="column"
-                                         v-for="(noObj,index) in noObjList" :key="index"
-                                         :class="{'active':noObj.isActive}"
-                                         :href="`#${video.videoPath}${index+1}`"
-                                         :underline="false"
-                                >第{{noObj.no}}集</el-link>
-                            </vuescroll>
-                        </div>
+    <div class="detail">
+        <!--
+            分析：
+                三个栏目
+                    第一个栏目分为左右结构，左边放图片，右边是详情
+        -->
+        <div class="tp-info">
+            <!--图片-->
+            <div class="tp-img">
+                <el-image
+                        style="width: 240px;height: 350px"
+                        :src="detail.cover"></el-image>
+                <em>{{detail.count}}</em>
+            </div>
+            <div class="tp-detail">
+                <div class="tp-title">
+                    <h3>{{detail.name}}</h3>
+                    <div class="score">
+                        <i>豆瓣</i>
+                        <span class="text">{{detail.score}}</span>
                     </div>
-                </el-col>
-            </el-row>
-        </div>
+                </div>
+                <div class="tp-Desc">
+                    <li class="alias">别名：{{detail.alias}}</li>
+                    <li class="intro">导演：{{detail.director}}</li>
+                    <li class="starring">主演：{{detail.actors}}</li>
+                    <li>
+                        <label >地区：{{detail.area}}</label>
+                        <label >语言：{{detail.language}}</label>
+                    </li>
+                    <li>
+                        <label >分类：{{detail.category}}</label>
+                        <label >类型：{{detail.type}}</label>
+                    </li>
+                    <li>
+                        <label >时间：{{detail.time}}</label>
+                        <label >年代：{{detail.year}}</label>
+                    </li>
+                    <li class="intro">
+                        剧情：<span class="detail-desc"
 
+                    >{{detail.desc}}</span>
+                    </li>
+                </div>
+                <div class="tp-btn">
+                    <el-button class="play-now"
+                               round
+                               size="small"
+                               style="height: 40px;width: 120px"
+                               @click="play()"
+                    >立即播放</el-button>
+                </div>
+            </div>
+        </div>
         <div class="content-warp">
             <!--猜你喜欢-->
             <div class="recommend">
@@ -57,11 +61,7 @@
                 </div>
                 <div class="recommend-list">
                     <div class="recommend-item" v-for="(item,index) in favoriteList" :key="index" :title="item.name">
-                        <!--<el-link :underline="false" :href="`/#${item.videoPath}1`">-->
-                        <!--    <el-image :src="item.cover" style="height: 220px;width: 155px;"></el-image>-->
-                        <!--    <span class="listbox-score">{{item.score}}</span>-->
-                        <!--</el-link>-->
-                        <router-link  :to="`${item.videoPath}1`">
+                        <router-link  :to="`${item.videoPath}`">
                             <el-image :src="item.cover" style="height: 220px;width: 155px;"></el-image>
                             <span class="listbox-score">{{item.score}}</span>
                         </router-link>
@@ -87,69 +87,36 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
+    // import mockApi from "@/api/mockApi"
     import hanjuApi from "@/api/hanjuApi";
-    import vuescroll from 'vuescroll'
     export default {
-        name: "play",
-        components:{
-          vuescroll
-        },
+        name: "detail",
         data(){
             return{
-                ops:{
-                    bar:{
-                        disable:true
-                    }
-                },
-                count: 1,                // 总集数
-                noObjList:[],            // 集数
-                video:{},                 // video对象
+                detail:{},
                 category: this.$route.params.category,
                 limit: 10,
+                todayList:[],
                 favoriteList:[],
-                todayList:[]
+                video:{}
             }
         },
         mounted() {
-            this.getVideo()
             this.getFavorite()
             this.getToday()
-        },
-        computed:{
-            NO(){
-                if (this.$route.params.no>=100){
-                    return this.$route.params.no
-                }
-                return ("0" + this.$route.params.no).slice(-2);
-            }
+            this.getDetail()
         },
         methods:{
-            // 获得视频
-            async getVideo(){
-                let teleplayName = this.$route.params.teleplayName
-                let no = this.$route.params.no
-                let response = await hanjuApi.getVideo(teleplayName,no)
-                if (response.code === 20000){
-                    this.video = response.data.data
-                    this.count = this.video.videoCount
-                    for (let i=1;i<this.count+1;i++){
-                        let noObj = {
-                            no:("0" + i).slice(-2),
-                            isActive:false
-                        }
-                        if (i>=100){
-                            noObj.no = i
-                        }
-                        if (parseInt(no) === i){
-                            noObj.isActive=true
-                        }
-                        this.noObjList.push(noObj)
-                    }
+            async getDetail(){
+                let category = this.$route.params.category
+                let name = this.$route.params.teleplayName
+                let res = await hanjuApi.getDetail(category,name);
+                if (res.code === 20000){
+                    this.detail = res.data.data
                 }
             },
             // 猜你喜欢
@@ -169,60 +136,117 @@
             // 跳转路由
             changePage(video){
                 this.$router.push(video.videoPath)
-                // console.log(video)
+            },
+            // 播放
+            play(){
+                this.$router.push(this.$route.path+"1")
             }
         }
     }
 </script>
 
 <style scoped lang="less">
-    @import "~@/assets/less/mixin.less";
-    .player{
-        //播放部分
-        .player-primary{
-            background-color: black;
-            .player-aside-r{
-                height: 540px;
-                .series-wrap{
-                    .info{
-                        color: white;
-                        padding-left: 5px;
-                        .title{
-                            margin: auto;
+    @import "~@/assets/less/mixin";
+    .detail{
+        margin-top: 10px;
+        .tp-info{
+            display: flex;
+            background-color: white;
+            .tp-img{
+                margin: 10px;
+                em{
+                    position: absolute;
+                    color: #fff;
+                    padding: 0 10px;
+                    left: 10px;
+                    background-color: #fd3838d4;
+                    line-height: 24px;
+                    top: 356px;
+                    font-weight: bold;
+                }
+            }
+            .tp-detail{
+                margin: 10px 0 0 20px;
+                width: 875px;
+                float: right;
+                .tp-title{
+                    margin-top: -20px;
+                    h3{
+                        font-size: 30px;
+                        display: inline-block;
+                        line-height: 40px;
+                        overflow: hidden;
+                    }
+                    .score{
+                        float: right;
+                        color: #ff6d3e;
+                        border: 1px #2f8e44 solid;
+                        border-radius: 4px;
+                        position: relative;
+                        line-height: 28px;
+                        height: 28px;
+                        top: 30px;
+                        margin: 8px 0;
+                        background: rgba(255,255,255,0.65);
+                        cursor: default;
+                        vertical-align: center;
+                        i{
+                            color: #e8b99f;
+                            padding: 0 4px;
+                            font-size: 14px;
+                            background: #2f8e44;
+                            vertical-align: top;
+                            position: absolute;
+                            line-height: 28px;
+                            height: 28px;
+                        }
+                        .text{
+                            display: inline-block;
                             font-size: 20px;
+                            padding: 0 7px;
+                            vertical-align: top;
+                            margin-left: 30px;
+                            font-weight: bold;
+                            font-family: -webkit-pictograph;
                         }
                     }
-                    .tips-wrap{
-                        border-left: solid coral 2px;
-                        .tips{
-                            color: pink;
-                            font-size: 12px;
-                            line-height: 12px;
-                            padding-left: 5px;
+                }
+                .tp-Desc{
+                    margin-top: -20px;
+                    li{
+                        list-style-type: none;
+                        float: left;
+                        display: inline;
+                        width: 700px;
+                        #single-line-overflow;
+                        font-size: 14px;
+                        line-height: 24px;
+                        padding: 4px 0 5px 0;
+                        label{
+                            width: 44%;
+                            overflow: hidden;
+                            float: left;
+                            display: inline;
+                            margin-right: 4%;
                         }
                     }
-                    .series{
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: flex-start;
-                        .column{
-                            width: 20%;
-                            color: white;
-                            cursor: pointer;
-                            margin: 5px 10px;
-                            &:hover{
-                                opacity: 0.7;
-                            }
-                        }
-                        .active{
-                            opacity: 0.7;
-                        }
+                }
+                .tp-btn{
+                    position: absolute;
+                    float: left;
+                    font-size: 15px;
+                    top: 340px;
+                    .play-now{
+                        background: #ff5f00;
+                        color: #ffffff;
+                        font-size: 14px;
+                        line-height: 24px;
                     }
                 }
             }
         }
-
         .content-warp{
+            margin-top: 20px;
             display: flex;
             //猜你喜欢
             .recommend{
@@ -241,8 +265,7 @@
                             top: 3px;
                             width: 4px;
                             height: 20px;
-                            background:red;
-
+                            background:red
                         }
                     }
                 }

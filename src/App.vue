@@ -13,8 +13,8 @@
       <div class="content"
            :style="contentStyle"
            ref="scrollone">
-          <router-view></router-view>
-
+          <!--<router-view></router-view>-->
+          <router-view :key="$route.path"></router-view>
       </div>
 
       <!--底部-->
@@ -31,50 +31,53 @@ import Footer from "@/components/Footer";
 import bingApi from "@/api/bingApi"
 // import {mapState} from 'vuex'
 export default {
-  name: 'App',
-  components: {
-      Footer,
-      Header
-  },
-  data(){
-      return{
-          n:1,     //返回背景图数量
-          imgUrl:'',
-          minWidth: "1250px",
-          isFixed: false,
-          contentStyle:{
-              width: "80%",
-              position: "relative",
-              left: "10%",
-              top: "60px"
-          }
-      }
-  },
-  created() {
-      this.getBingImage(this.n)
-  },
-  mounted() {
-      // 页面大小改变
-      window.onresize = ()=>{
-          let windowWidth = window.innerWidth
-          if (windowWidth < this.minWidth){
-              this.contentStyle = {}
-          }else {
-              this.contentStyle = {
+      name: 'App',
+      components: {
+          Footer,
+          Header
+      },
+      data(){
+          return{
+              n:1,     //返回背景图数量
+              imgUrl:'',
+              minWidth: "1250px",
+              isFixed: false,
+              contentStyle:{
                   width: "80%",
                   position: "relative",
                   left: "10%",
                   top: "60px"
               }
           }
-      }
-      // 监听页面的滚动时间
-      window.addEventListener("scroll",this.handleScroll)
-  },
-  computed:{
+      },
+      created() {
+          this.getBingImage(this.n)
+      },
+      mounted() {
+          // 页面大小改变
+          window.onresize = ()=>{
+              let windowWidth = window.innerWidth
+              if (windowWidth < this.minWidth){
+                  this.contentStyle = {}
+              }else {
+                  this.contentStyle = {
+                      width: "80%",
+                      position: "relative",
+                      left: "10%",
+                      top: "60px"
+                  }
+              }
+          }
+          // 监听页面的滚动时间
+          window.addEventListener("scroll",this.handleScroll)
+      },
+      computed:{
 
-  },
-  methods:{
+      },
+      beforeDestroy() {
+          window.removeEventListener("scroll",this.handleScroll)
+      },
+      methods:{
       //获得必应每日壁纸
       async getBingImage(n){
           const params = {
@@ -93,9 +96,9 @@ export default {
           // 获取滚动时的高度
           let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 
-          let oneHeight = this.$refs.scrollone.offsetTop;
-          console.log(oneHeight)
-          this.isFixed = scrollTop > oneHeight ? true: false;
+          let oneHeight = this.$refs.scrollone.offsetTop
+          // console.log(oneHeight)
+          this.isFixed = scrollTop > oneHeight ? true: false
       }
   }
 }

@@ -7,11 +7,13 @@ import "./assets/less/index.less"
 
 import store from "./store"
 import router from "./router"
-
 //引入element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
+
+// 使用Mock模拟数据
+import "@/mock/mockServe"
 
 new Vue({
   router,

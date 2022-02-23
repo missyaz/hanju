@@ -18,8 +18,17 @@ export default new Router({
             component: () => import('@/pages/eyesVideo')
         },
         {
-            path: "/play",
-            component: ()=> import('@/pages/play')
-        }
+            path: "/:category",
+            component:() => import('@/pages/category')
+        },
+        {
+            path: "/:category/:teleplayName/:no",
+            component: () => import('@/pages/play')
+        },
+        {
+            path: "/:category/:teleplayName",
+            component:() => import('@/pages/detail')
+        },
+
     ]
 })

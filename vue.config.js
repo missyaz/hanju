@@ -20,6 +20,11 @@ module.exports = {
                 target:"https://baobab.kaiyanapp.com",
                 changeOrigin: true,
                 pathRewrite:{'^/daily/eyes/video':'/api/v4/tabs/selected'}
+            },
+            "/daily/teleplay":{
+                target:"http://127.0.0.1:8774",
+                changeOrigin: true,
+                pathRewrite:{'^/daily/teleplay':''}
             }
         }
     }
